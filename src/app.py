@@ -89,12 +89,37 @@ def update_client(client_id: int, name: str, email: str, phone: str):
     pass
 
 
-def delete_client(client_id: int, confirm: bool = True):
-   pass
+def delete_client(client_id: int, confirm: bool = False):
+    """
+    Deletes an existing client from the database.
 
-def read_clients_table(search: str = ""):
-    clients = read_clients(search)
-    return [[client["id"], client["name"], client["email"], client["phone"]] for client in clients]
+    Args:
+        client_id (int): The ID of the client to delete.
+        confirm (bool): Confirmation of deletion.
+
+    Returns:
+        str: Message indicating the result of the operation.
+    """
+    if not confirm:
+        return "Debe confirmar la eliminación."
+
+    if client_id is None or client_id <= 0:
+        return "ID de cliente inválido."
+
+    try:
+        with Session() as session:
+            client = session.get(Client, int(client_id))
+
+            if client is None:
+                return "Cliente no encontrado."
+
+            session.delete(client)
+            session.commit()
+
+        return "Cliente eliminado correctamente."
+
+    except Exception as exc:
+        return f"Error al eliminar el cliente: {exc}"
 
 
 def build_app():
