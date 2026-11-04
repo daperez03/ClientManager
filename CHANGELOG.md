@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/daperez03/ClientManager/compare/v0.2.1...v0.3.0) (2026-11-04)
+
+
+### Features
+
+* implement client update ([f96cc06](https://github.com/daperez03/ClientManager/commit/f96cc06b12859b8ab5487585d5a8007012fc6920))
+
 ## [0.2.1](https://github.com/daperez03/ClientManager/compare/v0.2.0...v0.2.1) (2026-11-04)
 
 

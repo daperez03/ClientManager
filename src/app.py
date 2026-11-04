@@ -86,7 +86,45 @@ def read_clients(search: str = ""):
 
 
 def update_client(client_id: int, name: str, email: str, phone: str):
-    pass
+    """
+    Updates an existing client in the database.
+
+    Args:
+        client_id (int): The ID of the client to update.
+        name (str): The new name of the client.
+        email (str): The new email of the client.
+        phone (str): The new phone number of the client.
+
+    Returns:
+        str: Message indicating the result of the operation.
+    """
+    name = _normalize(name)
+    email = _normalize(email)
+    phone = _normalize(phone)
+
+    if not all((name, email, phone)):
+        return "Complete todos los campos."
+
+    if "@" not in email or "." not in email.split("@")[-1]:
+        return "Correo electrónico inválido."
+
+    try:
+        with Session() as session:
+            client = session.get(Client, client_id)
+
+            if client is None:
+                return "Cliente no encontrado."
+
+            client.name = name
+            client.email = email
+            client.phone = phone
+
+            session.commit()
+
+        return "Cliente actualizado correctamente."
+
+    except Exception as exc:
+        return f"Error al actualizar el cliente: {exc}"
 
 
 def delete_client(client_id: int, confirm: bool = False):

@@ -71,6 +71,7 @@ class TestClient:
         assert result == [
             {"id": 1, "name": "Ana Pérez", "email": "ana@example.com", "phone": "8888-8888"},
         ]
+        
     def test_delete_client_successfully(self):
         session = Mock()
         session.__enter__ = Mock(return_value=session)
