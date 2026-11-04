@@ -164,7 +164,7 @@ def read_clients_table(search: str = ""):
     return [[client["id"], client["name"], client["email"], client["phone"]] for client in clients]
 
 def build_app():
-    with gr.Blocks(theme=gr.themes.Soft(primary_hue="sky")) as app:
+    with gr.Blocks(theme=gr.themes.Default(primary_hue="sky")) as app:
         gr.Markdown("# Gestión de clientes")
 
         with gr.Tab("Crear cliente"):
