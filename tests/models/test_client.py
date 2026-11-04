@@ -71,30 +71,42 @@ class TestClient:
         assert result == [
             {"id": 1, "name": "Ana Pérez", "email": "ana@example.com", "phone": "8888-8888"},
         ]
-    
-    def test_update_client_successfully(self):
+        
+    def test_delete_client_successfully(self):
         session = Mock()
         session.__enter__ = Mock(return_value=session)
         session.__exit__ = Mock(return_value=None)
 
-        client = Client(id=1, name="Ana Pérez", email="ana@example.com", phone="8888-8888")
+        client = Client(
+            id=1,
+            name="Ana Pérez",
+            email="ana@example.com",
+            phone="8888-8888"
+        )
         session.get.return_value = client
 
         with patch("app.Session", return_value=session):
-            result = update_client(1, "Ana Gómez", "ana.gomez@example.com", "7777-7777")
+            result = delete_client(1, True)
 
-        assert result == "Cliente actualizado correctamente."
-        assert client.name == "Ana Gómez"
-        assert client.email == "ana.gomez@example.com"
-        assert client.phone == "7777-7777"
+        assert result == "Cliente eliminado correctamente."
+        session.get.assert_called_once_with(Client, 1)
+        session.delete.assert_called_once_with(client)
         session.commit.assert_called_once()
 
-    def test_update_client_with_invalid_email(self):
-        result = update_client(1, "Ana Pérez", "correo-invalido", "8888-8888")
+    def test_delete_client_not_found(self):
+        session = Mock()
+        session.__enter__ = Mock(return_value=session)
+        session.__exit__ = Mock(return_value=None)
+        session.get.return_value = None
 
-        assert result == "Correo electrónico inválido."
+        with patch("app.Session", return_value=session):
+            result = delete_client(99, True)
 
-    def test_update_client_with_missing_fields(self):
-        result = update_client(1, "", "ana@example.com", "8888-8888")
+        assert result == "Cliente no encontrado."
+        session.delete.assert_not_called()
+        session.commit.assert_not_called()
 
-        assert result == "Complete todos los campos."
+    def test_delete_client_without_confirmation(self):
+        result = delete_client(1, False)
+
+        assert result == "Debe confirmar la eliminación."
