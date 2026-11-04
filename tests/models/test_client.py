@@ -6,7 +6,7 @@ import os
 
 os.environ.setdefault("DATABASE_URL", "sqlite:///:memory:")
 
-from app import create_client
+from app import create_client, read_clients, update_client, delete_client
 from models.Client import Client
 
 
@@ -37,3 +37,37 @@ class TestClient:
         result = create_client("", "ana@example.com", "8888-8888")
 
         assert result == "Complete todos los campos."
+
+    def test_read_clients_returns_all_clients(self):
+        session = Mock()
+        session.__enter__ = Mock(return_value=session)
+        session.__exit__ = Mock(return_value=None)
+        session.query.return_value.order_by.return_value.all.return_value = [
+            Client(id=1, name="Ana Pérez", email="ana@example.com", phone="8888-8888"),
+            Client(id=2, name="Luis Gómez", email="luis@example.com", phone="7777-7777"),
+        ]
+
+        with patch("app.Session", return_value=session):
+            result = read_clients()
+
+        assert result == [
+            {"id": 1, "name": "Ana Pérez", "email": "ana@example.com", "phone": "8888-8888"},
+            {"id": 2, "name": "Luis Gómez", "email": "luis@example.com", "phone": "7777-7777"},
+        ]
+
+    def test_read_clients_filters_by_search_term(self):
+        session = Mock()
+        session.__enter__ = Mock(return_value=session)
+        session.__exit__ = Mock(return_value=None)
+        query = Mock()
+        query.filter.return_value.order_by.return_value.all.return_value = [
+            Client(id=1, name="Ana Pérez", email="ana@example.com", phone="8888-8888"),
+        ]
+        session.query.return_value = query
+
+        with patch("app.Session", return_value=session):
+            result = read_clients("ana")
+
+        assert result == [
+            {"id": 1, "name": "Ana Pérez", "email": "ana@example.com", "phone": "8888-8888"},
+        ]
