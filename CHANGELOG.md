@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.0](https://github.com/daperez03/ClientManager/compare/v0.3.0...v0.4.0) (2026-11-04)
+
+
+### Features
+
+* update the gradio theme to default ([454e3ca](https://github.com/daperez03/ClientManager/commit/454e3ca060faf5de2d76631da23beec22d2479c6))
+
+
+### Documentation
+
+* update the readme ([9964ad6](https://github.com/daperez03/ClientManager/commit/9964ad6e440ad90e719bd1e27e1e1130dcf1d733))
+
 ## [0.3.0](https://github.com/daperez03/ClientManager/compare/v0.2.1...v0.3.0) (2026-11-04)
 
 
