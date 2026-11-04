@@ -71,3 +71,30 @@ class TestClient:
         assert result == [
             {"id": 1, "name": "Ana Pérez", "email": "ana@example.com", "phone": "8888-8888"},
         ]
+    
+    def test_update_client_successfully(self):
+        session = Mock()
+        session.__enter__ = Mock(return_value=session)
+        session.__exit__ = Mock(return_value=None)
+
+        client = Client(id=1, name="Ana Pérez", email="ana@example.com", phone="8888-8888")
+        session.get.return_value = client
+
+        with patch("app.Session", return_value=session):
+            result = update_client(1, "Ana Gómez", "ana.gomez@example.com", "7777-7777")
+
+        assert result == "Cliente actualizado correctamente."
+        assert client.name == "Ana Gómez"
+        assert client.email == "ana.gomez@example.com"
+        assert client.phone == "7777-7777"
+        session.commit.assert_called_once()
+
+    def test_update_client_with_invalid_email(self):
+        result = update_client(1, "Ana Pérez", "correo-invalido", "8888-8888")
+
+        assert result == "Correo electrónico inválido."
+
+    def test_update_client_with_missing_fields(self):
+        result = update_client(1, "", "ana@example.com", "8888-8888")
+
+        assert result == "Complete todos los campos."
