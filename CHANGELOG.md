@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/daperez03/ClientManager/compare/v0.2.0...v0.2.1) (2026-11-04)
+
+
+### Features
+
+* add read method  ([#5](https://github.com/daperez03/ClientManager/issues/5)) ([e2eba24](https://github.com/daperez03/ClientManager/commit/e2eba2496129c7da3b390a038ca5d99c240ab9cc))
+
 ## [0.2.0](https://github.com/daperez03/ClientManager/compare/v0.1.0...v0.2.0) (2026-11-04)
 
 
