@@ -121,6 +121,9 @@ def delete_client(client_id: int, confirm: bool = False):
     except Exception as exc:
         return f"Error al eliminar el cliente: {exc}"
 
+def read_clients_table(search: str = ""):
+    clients = read_clients(search)
+    return [[client["id"], client["name"], client["email"], client["phone"]] for client in clients]
 
 def build_app():
     with gr.Blocks(theme=gr.themes.Soft(primary_hue="sky")) as app:
